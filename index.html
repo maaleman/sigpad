@@ -14,7 +14,7 @@
 
   //resizing fix for Android
   function onDeviceReady() {
-    canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-100)+'"></canvas>';
+    canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-90)+'"></canvas>';
     newCanvas();
   }
 
@@ -25,7 +25,7 @@
     });
 
     //Dynamically changes the canvas to window size 
-    canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-100)+'"></canvas>';
+    canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-90)+'"></canvas>';
     $("#content").height($(window).height()-90);
     newCanvas();  
 
@@ -45,7 +45,7 @@
   
     $("#content").html(canvas);
     ctx=document.getElementById("canvas").getContext("2d");
-    ctx.strokeStyle = "000";
+    ctx.strokeStyle = "#000";
     ctx.lineWidth = 3;
     
     ctx.beginPath();
@@ -62,14 +62,14 @@
   $.fn.drawTouch = function() {
     var start = function(e) {
       ctx.beginPath();
-      x = e.originalEvent.changedTouches[0].pageX;
-      y = e.originalEvent.changedTouches[0].pageY-44;
+      x = e.originalEvent.changedTouches[0].pageX-15;
+      y = e.originalEvent.changedTouches[0].pageY-58;
       ctx.moveTo(x,y);
     };
     var move = function(e) {
       e.preventDefault();
-      x = e.originalEvent.changedTouches[0].pageX;
-      y = e.originalEvent.changedTouches[0].pageY-44;
+      x = e.originalEvent.changedTouches[0].pageX-15;
+      y = e.originalEvent.changedTouches[0].pageY-58;
       ctx.lineTo(x,y);
       ctx.stroke();
     };
@@ -83,14 +83,14 @@
     var start = function(e) {
       clicked = 1;
       ctx.beginPath();
-      x = e.pageX;
-      y = e.pageY-44;
+      x = e.pageX-15;
+      y = e.pageY-58;
       ctx.moveTo(x,y);
     };
     var move = function(e) {
       if(clicked){
-        x = e.pageX;
-        y = e.pageY-44;
+        x = e.pageX-15;
+        y = e.pageY-58;
         ctx.lineTo(x,y);
         ctx.stroke();
       }
