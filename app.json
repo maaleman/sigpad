@@ -1,0 +1,9 @@
+{
+	"reponame":"signature-pad",
+	"caption":"Signature Pad",
+	"tooltip":"Electronic Signature Maker",
+	"description":"simple electronic signature maker using canvas",
+	"articleurl":"#",
+	"categories":["jQuery","jQuery Mobile","Game"],
+	"visible": "false"
+}

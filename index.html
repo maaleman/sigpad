@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+  <title>Signature Pad</title>
+  <link rel="stylesheet" href="lib/jquery.mobile/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="lib/css/style.css" />
+  <script src="script.js"></script>
+	<script src="lib/jquery/jquery-1.8.2.min.js"></script>
+	<script src="lib/jquery.mobile/jquery.mobile-1.2.0.min.js"></script>
+	<script src="cordova.js"></script>
+
+  <script type="text/javascript">
+  var canvas;
+
+  //resizing fix for Android
+  function onDeviceReady() {
+    canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-100)+'"></canvas>';
+    newCanvas();
+  }
+
+  $(document).ready(function() {
+    
+    $(document).bind("touchmove",function(event){
+      event.preventDefault();
+    });
+
+    //Dynamically changes the canvas to window size 
+    canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-100)+'"></canvas>';
+    $("#content").height($(window).height()-90);
+    newCanvas();  
+
+    // Call onDeviceReady when Cordova is loaded and talking with the native device
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // prevent footer to toggle on touch
+    $("[data-role=footer]").fixedtoolbar({ tapToggle: false });
+    
+    $("#new").click(function() {
+      newCanvas();
+    });
+
+  });
+    
+  function newCanvas(){
+  
+    $("#content").html(canvas);
+    ctx=document.getElementById("canvas").getContext("2d");
+    ctx.strokeStyle = "000";
+    ctx.lineWidth = 3;
+    
+    ctx.beginPath();
+    x = $(window).width()/2 ;
+    y = ($(window).height()-90)/2 ;
+    ctx.moveTo(x, y); 
+    
+    // setup to trigger drawing on mouse or touch
+    $("#canvas").drawTouch();
+    $("#canvas").drawMouse();
+  }
+
+  // prototype to start drawing on touch using canvas moveTo and lineTo
+  $.fn.drawTouch = function() {
+    var start = function(e) {
+      ctx.beginPath();
+      x = e.originalEvent.changedTouches[0].pageX;
+      y = e.originalEvent.changedTouches[0].pageY-44;
+      ctx.moveTo(x,y);
+    };
+    var move = function(e) {
+      e.preventDefault();
+      x = e.originalEvent.changedTouches[0].pageX;
+      y = e.originalEvent.changedTouches[0].pageY-44;
+      ctx.lineTo(x,y);
+      ctx.stroke();
+    };
+    $(this).touchstart(start);
+    $(this).touchmove(move);  
+  };
+
+  // prototype to start drawing on mouse using canvas moveTo and lineTo
+  $.fn.drawMouse = function() {
+    var clicked = 0;
+    var start = function(e) {
+      clicked = 1;
+      ctx.beginPath();
+      x = e.pageX;
+      y = e.pageY-44;
+      ctx.moveTo(x,y);
+    };
+    var move = function(e) {
+      if(clicked){
+        x = e.pageX;
+        y = e.pageY-44;
+        ctx.lineTo(x,y);
+        ctx.stroke();
+      }
+    };
+    var stop = function(e) {
+      clicked = 0;
+    };
+    $(this).mousedown(start);
+    $(this).mousemove(move);
+    $(window).mouseup(stop);
+  };
+
+  </script>
+</head>
+<body>
+  <div data-role="page">
+
+    <div data-role="header">
+      <a id="new" data-role="button" data-icon="gear" data-theme="b" class="ui-btn-left">New</a>
+      <a id="save" data-role="button" data-icon="check" data-theme="b" class="ui-btn-right">Save</a>
+      <h1>Signature Pad</h1>
+    </div>
+
+    <div id="content" data-role="content"> 
+       
+    </div>
+
+    <div data-role="footer">
+      <h5>Maikko A. Aleman   |   2013 </h5>
+    </div>
+  </div>
+</body>
+</html>
